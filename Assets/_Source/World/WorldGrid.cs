@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets._Source.App;
+using UnityEngine;
 
 namespace Assets._Source.World
 {
@@ -41,6 +42,11 @@ namespace Assets._Source.World
             get { return -VerticalExtend; }
         }
 
+        private float RepositionOffset
+        {
+            get { return _gridCellSize / 2; }
+        }
+
         private Vector3 SnakePosition
         {
             get { return _snakeTransform.position; }
@@ -50,17 +56,10 @@ namespace Assets._Source.World
         private void Awake()
         {
             var playerElementSize = _snakeSprite.sprite.bounds.size;
-
             _gridCellSize = playerElementSize.x;
-
-            // ToDo Fix Pixel vs Units issue
-            //_gridColumns = Mathf.RoundToInt(Screen.width / _gridCellSize);
-            //_gridRows = Mathf.RoundToInt(Screen.height / _gridCellSize);
-
-            _gridColumns = 20;
-            _gridRows = 12;
-
-            SnakePosition = Vector3.up;
+            
+            _gridColumns = Mathf.RoundToInt(WorldConstants.WidthUnits / _gridCellSize);
+            _gridRows = Mathf.RoundToInt(WorldConstants.HeightUnits / _gridCellSize);
         }
 
         private void Update()
@@ -70,27 +69,27 @@ namespace Assets._Source.World
             var targetY = SnakePosition.y;
 
             // Out on LEFT
-            if (SnakePosition.x <= LeftBorder)
+            if (SnakePosition.x < LeftBorder)
             {
-                targetX = RightBorder - _gridCellSize;
+                targetX = RightBorder - RepositionOffset;
                 isDirty = true;
             }
             // Out on RIGHT
-            else if (SnakePosition.x >= RightBorder)
+            else if (SnakePosition.x > RightBorder)
             {
-                targetX = LeftBorder + _gridCellSize;
+                targetX = LeftBorder + RepositionOffset;
                 isDirty = true;
             }
             // Out on TOP
-            else if (SnakePosition.y >= TopBorder)
+            else if (SnakePosition.y > TopBorder)
             {
-                targetY = BottomBorder + _gridCellSize;
+                targetY = BottomBorder + RepositionOffset;
                 isDirty = true;
             }
             // Out on BOTTOM
-            else if (SnakePosition.y <= BottomBorder)
+            else if (SnakePosition.y < BottomBorder)
             {
-                targetY = TopBorder - _gridCellSize;
+                targetY = TopBorder - RepositionOffset;
                 isDirty = true;
             }
 

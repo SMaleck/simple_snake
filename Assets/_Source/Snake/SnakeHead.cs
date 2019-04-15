@@ -6,6 +6,8 @@ namespace Assets._Source.Snake
     public class SnakeHead : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer _snakeSprite;
+
+        [Range(0.1f, 1f)]
         [SerializeField] private float _moveIntervalSeconds;
 
         private Vector2 _moveDirection = Vector2.up;
