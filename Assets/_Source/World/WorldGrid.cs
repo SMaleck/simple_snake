@@ -8,6 +8,8 @@ namespace Assets._Source.World
         [SerializeField] private Transform _snakeTransform;
         [SerializeField] private SpriteRenderer _snakeSprite;
 
+        private bool _isSetup = false;
+
         private float _gridCellSize;
         private int _gridColumns;
         private int _gridRows;
@@ -55,11 +57,20 @@ namespace Assets._Source.World
 
         private void Awake()
         {
+            Setup();
+        }
+
+        private void Setup()
+        {
+            if (_isSetup) { return; }
+
             var playerElementSize = _snakeSprite.sprite.bounds.size;
             _gridCellSize = playerElementSize.x;
-            
+
             _gridColumns = Mathf.RoundToInt(WorldConstants.WidthUnits / _gridCellSize);
             _gridRows = Mathf.RoundToInt(WorldConstants.HeightUnits / _gridCellSize);
+
+            _isSetup = true;
         }
 
         private void Update()
@@ -97,6 +108,20 @@ namespace Assets._Source.World
             {
                 SnakePosition = new Vector3(targetX, targetY);
             }
+        }
+
+        public Vector2 GetMinPosition()
+        {
+            if (!_isSetup) { Setup(); }
+
+            return new Vector2(-HorizontalExtend, -VerticalExtend);
+        }
+
+        public Vector2 GetMaxPosition()
+        {
+            if (!_isSetup) { Setup(); }
+
+            return new Vector2(HorizontalExtend, VerticalExtend);
         }
     }
 }
