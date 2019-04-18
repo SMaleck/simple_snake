@@ -34,10 +34,10 @@ namespace Assets._Source.Snake
             if (_isSetup) { return; }
 
             _snakeElements = new List<SnakeElement>();
-            var head = AddElement(_startPosition);
             _headIndex = 0;
             _tailIndex = 0;
 
+            var head = AddElement();
             var spriteRenderer = head.GetComponent<SpriteRenderer>();
             _snakeSize = spriteRenderer.sprite.bounds.size.x;
 
@@ -51,6 +51,11 @@ namespace Assets._Source.Snake
             {
                 _elapsedTime = 0;
                 MoveElement();
+            }
+
+            if (Input.GetKeyDown("q"))
+            {
+                hasQueuedElement = true;
             }
         }
 
@@ -75,34 +80,49 @@ namespace Assets._Source.Snake
 
         public void OnCollidedWithSelf()
         {
-
+            // ToDo RESTART level
         }
 
-        private SnakeElement AddElement(Vector3 spawnPosition)
+        private SnakeElement AddElement()
         {
-            var snakeElement = SpawnAt(spawnPosition);
-            snakeElement.SetSnakeManager(this);
+            var snakeElement = Spawn();
             _snakeElements.Add(snakeElement);
 
             return snakeElement;
         }
 
-        private SnakeElement SpawnAt(Vector3 spawnPosition)
+        private SnakeElement AddElementAt(int index)
+        {
+            var snakeElement = Spawn();
+            _snakeElements.Insert(index, snakeElement);
+
+            return snakeElement;
+        }
+
+        private SnakeElement Spawn()
         {
             var snakeElement = Instantiate(_snakeElementPrefab);
-            snakeElement.gameObject.transform.position = spawnPosition;
+            snakeElement.SetSnakeManager(this);
+            snakeElement.gameObject.transform.position = _startPosition;
 
             return snakeElement;
         }
 
         private void MoveElement()
         {
+            if (hasQueuedElement)
+            {
+                AddElementAt(_tailIndex);
+                hasQueuedElement = false;
+            }
+
             var head = _snakeElements[_headIndex];
             var tail = _snakeElements[_tailIndex];
 
             var targetPosition = head.Position + (_snakeSize * _inputComponent.InputDirection);
-
             tail.Position = targetPosition;
+
+            _headIndex = _tailIndex;
             DecrementTailIndex();
         }
 
