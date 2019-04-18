@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets._Source.Snake
 {
     public class SnakeElement : MonoBehaviour
-    {
-        private SnakeHead _snakeHead;
-        public bool IsHead { get; private set; }
+    {                
+        private SnakeManager _snakeManager;
 
-        public void SetIsHead(bool value)
+        public Vector3 Position
         {
-            IsHead = value;
+            get { return gameObject.transform.position; }
+            set { gameObject.transform.position = value; }
         }
 
         public void OnTriggerEnter2D(Collider2D other)
         {
-            
+
+        }
+
+        public void SetSnakeManager(SnakeManager snakeManager)
+        {
+            _snakeManager = snakeManager;
         }
     }
 }

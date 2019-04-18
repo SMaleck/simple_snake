@@ -2,11 +2,11 @@
 using Assets._Source.Snake;
 using UnityEngine;
 
-namespace Assets._Source.World
+namespace Assets._SourceV1
 {
-    public class WorldGrid : MonoBehaviour
+    public class WorldGridV1 : MonoBehaviour
     {
-        [SerializeField] private SnakeManager _snakeManager;
+        [SerializeField] private SnakeHead _snakeHead;
 
         private bool _isSetup = false;
         
@@ -49,6 +49,13 @@ namespace Assets._Source.World
             get { return _gridCellSize / 2; }
         }
 
+        private Vector2 SnakePosition
+        {
+            get { return _snakeHead.gameObject.transform.position; }
+            set { _snakeHead.gameObject.transform.position = value; }
+        }
+
+
         private void Awake()
         {
             Setup();
@@ -58,7 +65,7 @@ namespace Assets._Source.World
         {
             if (_isSetup) { return; }
             
-            _gridCellSize = _snakeManager.GetSnakeSize();
+            _gridCellSize = _snakeHead.GetSnakeSize();
             _gridColumns = Mathf.RoundToInt(WorldConstants.WidthUnits / _gridCellSize);
             _gridRows = Mathf.RoundToInt(WorldConstants.HeightUnits / _gridCellSize);
 
@@ -67,32 +74,30 @@ namespace Assets._Source.World
 
         private void Update()
         {
-            var snakeHead = _snakeManager.GetSnakeHead();
-
             var isDirty = false;
-            var targetX = snakeHead.Position.x;
-            var targetY = snakeHead.Position.y;
+            var targetX = SnakePosition.x;
+            var targetY = SnakePosition.y;
 
             // Out on LEFT
-            if (snakeHead.Position.x < LeftBorder)
+            if (SnakePosition.x < LeftBorder)
             {
                 targetX = RightBorder - RepositionOffset;
                 isDirty = true;
             }
             // Out on RIGHT
-            else if (snakeHead.Position.x > RightBorder)
+            else if (SnakePosition.x > RightBorder)
             {
                 targetX = LeftBorder + RepositionOffset;
                 isDirty = true;
             }
             // Out on TOP
-            else if (snakeHead.Position.y > TopBorder)
+            else if (SnakePosition.y > TopBorder)
             {
                 targetY = BottomBorder + RepositionOffset;
                 isDirty = true;
             }
             // Out on BOTTOM
-            else if (snakeHead.Position.y < BottomBorder)
+            else if (SnakePosition.y < BottomBorder)
             {
                 targetY = TopBorder - RepositionOffset;
                 isDirty = true;
@@ -100,7 +105,7 @@ namespace Assets._Source.World
 
             if (isDirty)
             {
-                snakeHead.Position = new Vector3(targetX, targetY);
+                SnakePosition = new Vector3(targetX, targetY);
             }
         }
 

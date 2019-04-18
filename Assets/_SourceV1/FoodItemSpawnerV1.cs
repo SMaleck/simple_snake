@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace Assets._Source.World
+namespace Assets._SourceV1
 {
-    public class FoodItemSpawner : MonoBehaviour
+    public class FoodItemSpawnerV1 : MonoBehaviour
     {
-        [SerializeField] private WorldGrid _worldGrid;        
+        [SerializeField] private WorldGridV1 _worldGrid;        
         [SerializeField] private GameObject _foodItemPrefab;
 
         [Range(0.1f, 10f)]

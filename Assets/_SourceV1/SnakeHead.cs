@@ -25,6 +25,11 @@ namespace Assets._Source.Snake
             UpdateMovement();
         }
 
+        public float GetSnakeSize()
+        {
+            return _snakeSize;
+        }
+
         private void UpdateInputState()
         {
             var xAxisInput = InputHelper.GetXAxis();
