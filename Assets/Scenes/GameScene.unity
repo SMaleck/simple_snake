@@ -320,9 +320,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _worldGrid: {fileID: 278317856}
-  _foodItemPrefab: {fileID: 1011993105836390, guid: 4c65e991b29f8e34eaafec88d38066ab,
+  _foodItemPrefab: {fileID: 114196832167625962, guid: 4c65e991b29f8e34eaafec88d38066ab,
     type: 2}
-  _spawnIntervalSeconds: 2
 --- !u!4 &1638030674
 Transform:
   m_ObjectHideFlags: 0

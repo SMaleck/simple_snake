@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets._Source.Snake
@@ -17,9 +18,8 @@ namespace Assets._Source.Snake
         private bool _isSetup = false;
 
         private List<SnakeElement> _snakeElements;
-        private bool hasQueuedElement;
-        private int _headIndex;
-        private int _tailIndex;
+        private SnakeElement _snakeHead;
+        private bool _hasQueuedElement;
 
         private float _elapsedTime = 0;
         private float _snakeSize;
@@ -34,11 +34,9 @@ namespace Assets._Source.Snake
             if (_isSetup) { return; }
 
             _snakeElements = new List<SnakeElement>();
-            _headIndex = 0;
-            _tailIndex = 0;
 
-            var head = AddElement();
-            var spriteRenderer = head.GetComponent<SpriteRenderer>();
+            _snakeHead = Spawn();
+            var spriteRenderer = _snakeHead.GetComponent<SpriteRenderer>();
             _snakeSize = spriteRenderer.sprite.bounds.size.x;
 
             _isSetup = true;
@@ -55,7 +53,7 @@ namespace Assets._Source.Snake
 
             if (Input.GetKeyDown("q"))
             {
-                hasQueuedElement = true;
+                _hasQueuedElement = true;
             }
         }
 
@@ -63,7 +61,7 @@ namespace Assets._Source.Snake
         {
             if (!_isSetup) { Setup(); }
 
-            return _snakeElements[_headIndex];
+            return _snakeHead;
         }
 
         public float GetSnakeSize()
@@ -75,7 +73,7 @@ namespace Assets._Source.Snake
 
         public void OnPickedUpFood()
         {
-            hasQueuedElement = true;
+            _hasQueuedElement = true;
         }
 
         public void OnCollidedWithSelf()
@@ -91,14 +89,6 @@ namespace Assets._Source.Snake
             return snakeElement;
         }
 
-        private SnakeElement AddElementAt(int index)
-        {
-            var snakeElement = Spawn();
-            _snakeElements.Insert(index, snakeElement);
-
-            return snakeElement;
-        }
-
         private SnakeElement Spawn()
         {
             var snakeElement = Instantiate(_snakeElementPrefab);
@@ -110,31 +100,31 @@ namespace Assets._Source.Snake
 
         private void MoveElement()
         {
-            if (hasQueuedElement)
+            if (_hasQueuedElement)
             {
-                AddElementAt(_tailIndex);
-                hasQueuedElement = false;
+                AddElement();
+                _hasQueuedElement = false;
             }
 
-            var head = _snakeElements[_headIndex];
-            var tail = _snakeElements[_tailIndex];
+            var lastHeadPosition = _snakeHead.Position;
+            var targetPosition = _snakeHead.Position + (_snakeSize * _inputComponent.InputDirection);
+            _snakeHead.Position = targetPosition;
 
-            var targetPosition = head.Position + (_snakeSize * _inputComponent.InputDirection);
-            tail.Position = targetPosition;
-
-            _headIndex = _tailIndex;
-            DecrementTailIndex();
+            MoveTailTo(lastHeadPosition);
         }
 
-        private void DecrementTailIndex()
+        private void MoveTailTo(Vector3 lastHeadPosition)
         {
-            if (_tailIndex >= 0)
+            if (_snakeElements.Count <= 0)
             {
-                _tailIndex = _snakeElements.Count - 1;
                 return;
             }
 
-            _tailIndex--;
+            var tail = _snakeElements.Last();
+            tail.Position = lastHeadPosition;
+
+            _snakeElements.Insert(0, tail);
+            _snakeElements.RemoveAt(_snakeElements.Count - 1);
         }
     }
 }

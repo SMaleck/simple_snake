@@ -4,13 +4,9 @@ namespace Assets._Source.World
 {
     public class FoodItemSpawner : MonoBehaviour
     {
-        [SerializeField] private WorldGrid _worldGrid;        
-        [SerializeField] private GameObject _foodItemPrefab;
+        [SerializeField] private WorldGrid _worldGrid;
+        [SerializeField] private FoodItem _foodItemPrefab;
 
-        [Range(0.1f, 10f)]
-        [SerializeField] private float _spawnIntervalSeconds;
-
-        private float _elapsedTime = 0;
         private Vector2 _minPosition;
         private Vector2 _maxPosition;
 
@@ -18,21 +14,19 @@ namespace Assets._Source.World
         {
             _minPosition = _worldGrid.GetMinPosition();
             _maxPosition = _worldGrid.GetMaxPosition();
+
+            Spawn();
         }
 
-        private void Update()
+        public void OnFoodWasDestroyed()
         {
-            _elapsedTime += Time.deltaTime;
-            if (_elapsedTime >= _spawnIntervalSeconds)
-            {
-                _elapsedTime = 0;
-                Spawn();
-            }
+            Spawn();
         }
 
         private void Spawn()
-        {            
+        {
             var foodItem = GameObject.Instantiate(_foodItemPrefab);
+            foodItem.SetFoodItemSpawner(this);
             foodItem.transform.position = GetRandomPosition();
         }
 
