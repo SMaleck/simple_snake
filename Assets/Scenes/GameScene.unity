@@ -276,6 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9eca4d94d454ff45a6ae02af3d674d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _snakeHeadPrefab: {fileID: 114435018440269150, guid: 82807129bc65e9b498f05faf1ecacfd4,
+    type: 2}
   _snakeElementPrefab: {fileID: 114228744116257806, guid: b36a8dfdc3b6e2a458c56c53924d5a81,
     type: 2}
   _startPosition: {x: 0, y: 0}

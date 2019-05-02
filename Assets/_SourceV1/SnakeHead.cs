@@ -1,7 +1,7 @@
 ﻿using Assets._Source.App;
 using UnityEngine;
 
-namespace Assets._Source.Snake
+namespace Assets._SourceV1
 {
     public class SnakeHead : MonoBehaviour
     {

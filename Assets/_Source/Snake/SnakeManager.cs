@@ -7,6 +7,7 @@ namespace Assets._Source.Snake
     public class SnakeManager : MonoBehaviour
     {
         [Header("Spawning")]
+        [SerializeField] private SnakeHead _snakeHeadPrefab;
         [SerializeField] private SnakeElement _snakeElementPrefab;
         [SerializeField] private Vector2 _startPosition;
 
@@ -17,10 +18,10 @@ namespace Assets._Source.Snake
 
         private bool _isSetup = false;
 
+        private SnakeHead _snakeHead;
         private List<SnakeElement> _snakeElements;
-        private SnakeElement _snakeHead;
-        private bool _hasQueuedElement;
 
+        private bool _hasQueuedElement;
         private float _elapsedTime = 0;
         private float _snakeSize;
 
@@ -35,7 +36,8 @@ namespace Assets._Source.Snake
 
             _snakeElements = new List<SnakeElement>();
 
-            _snakeHead = Spawn();
+            _snakeHead = Instantiate(_snakeHeadPrefab);
+            _snakeHead.SetSnakeManager(this);
             var spriteRenderer = _snakeHead.GetComponent<SpriteRenderer>();
             _snakeSize = spriteRenderer.sprite.bounds.size.x;
 
@@ -49,11 +51,6 @@ namespace Assets._Source.Snake
             {
                 _elapsedTime = 0;
                 MoveElement();
-            }
-
-            if (Input.GetKeyDown("q"))
-            {
-                _hasQueuedElement = true;
             }
         }
 
@@ -83,17 +80,8 @@ namespace Assets._Source.Snake
 
         private SnakeElement AddElement()
         {
-            var snakeElement = Spawn();
-            _snakeElements.Add(snakeElement);
-
-            return snakeElement;
-        }
-
-        private SnakeElement Spawn()
-        {
             var snakeElement = Instantiate(_snakeElementPrefab);
-            snakeElement.SetSnakeManager(this);
-            snakeElement.gameObject.transform.position = _startPosition;
+            _snakeElements.Add(snakeElement);
 
             return snakeElement;
         }

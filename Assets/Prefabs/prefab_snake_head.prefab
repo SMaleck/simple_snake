@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212223073760207848}
   - component: {fileID: 61412828796772324}
   - component: {fileID: 50389297044923466}
-  - component: {fileID: 114228744116257806}
+  - component: {fileID: 114435018440269150}
   m_Layer: 0
-  m_Name: prefab_snake_element
+  m_Name: prefab_snake_head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114228744116257806
+--- !u!114 &114435018440269150
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1633894362159230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acbbe2b69bf598f46a489c67bc7cec4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f0a9d5c0a8efcc4197fdb0456468018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212223073760207848
@@ -134,7 +134,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d32117331e192d94096dee65b30bf1bf, type: 3}
-  m_Color: {r: 0.5572011, g: 0.13235295, b: 1, a: 1}
+  m_Color: {r: 0.30967364, g: 0.21896623, b: 0.99264705, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
